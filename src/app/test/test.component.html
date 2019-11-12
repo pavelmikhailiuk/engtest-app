@@ -1,0 +1,41 @@
+<div>Correct {{sc.hit}}, incorrect {{sc.fail}} of {{sc.total}}</div>
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <td>Russian word</td>
+        <td>English word</td>
+        <td>Answer</td>
+        <td colspan="2">Actions</td>
+    </tr>
+    </thead>
+
+    <tbody>
+        <tr *ngFor="let record of records | paginate:{itemsPerPage: 1, currentPage:p}">
+            <td>{{ record.rusWord }}</td>
+            <td><span id="{{ record.id }}" class="hidden">{{ record.engWord }}</span></td>
+            <td><form [formGroup]="angForm" novalidate>
+                <div class="form-group">
+                  <input id="formField" type="text" class="form-control" formControlName="engWord1" #engWord1 />
+                  <input type="hidden" formControlName="engWord" #engWord [(ngModel)] = "record.engWord"/>
+                </div>
+                <div
+                  *ngIf="angForm.controls['engWord1'].invalid && (angForm.controls['engWord1'].dirty || angForm.controls['engWord1'].touched)"
+                  class="alert alert-danger">
+                  <div *ngIf="angForm.controls['engWord1'].errors.required">
+                    English word answer is required.
+                  </div>
+                  <div id="incorrect" *ngIf="angForm.controls['engWord1'].errors.mustMatch">
+                    Your answer should be correct.
+                  </div>
+                </div>
+                </form>
+            </td>
+            <td><button (click) = "showRecord(record.id)" class="btn btn-primary" [disabled]="!isHidden(record.id)">Show correct answer</button></td>
+            <td><button (click) = "checkRecord(engWord1.value, record.engWord)" class="btn btn-primary" [disabled]="angForm.pristine || angForm.invalid">
+              Confirm
+            </button></td>
+        </tr>
+    </tbody>
+  </table>
+  <pagination-controls (pageChange)="p=$event"></pagination-controls>
+ 

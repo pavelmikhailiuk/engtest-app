@@ -1,0 +1,20 @@
+<table class="table table-hover">
+    <thead>
+    <tr>
+        <td>English word</td>
+        <td>Russian word</td>
+        <td>Glossary</td>
+        <td colspan="2">Actions</td>
+    </tr>
+    </thead>
+  
+    <tbody>
+        <tr *ngFor="let record of rh.records">
+            <td>{{ record.engWord }}</td>
+            <td>{{ record.rusWord }}</td>
+            <td>{{ record.glossary }}</td>
+            <td><a [routerLink]="['/edit', record.id]" class="btn btn-primary">Edit</a></td>
+            <td><a (click) = "deleteRecord(record._links.self.href)" class="btn btn-danger">Delete</a></td>
+        </tr>
+    </tbody>
+  </table>
